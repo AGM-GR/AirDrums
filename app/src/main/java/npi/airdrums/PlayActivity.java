@@ -77,10 +77,10 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
             linear_acceleration[1] = event.values[1] - gravity[1];
             linear_acceleration[2] = event.values[2] - gravity[2];
 
-            //Obtiene muestras entre 100 milisegundos
+            //Obtiene muestras cada x milisegundos
             long curTime = System.currentTimeMillis();
 
-            if ((curTime - lastUpdate) > 100) {
+            if ((curTime - lastUpdate) > 60) {
                 lastUpdate = curTime;
 
                 //Obtengo el vector unitario de la gravedad
@@ -92,7 +92,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
                 //Calcula la velocidad en proporción de la dirección de la gravedad
                 float speed = ((linear_acceleration[0]*gravityDirection[0]) + (linear_acceleration[1]*gravityDirection[1]) + (linear_acceleration[2]*gravityDirection[2])) * 10;
 
-                if (speed < lastSpeed*0.6 && lastSpeed > speedLimit) {
+                if (speed < lastSpeed*0.65 && lastSpeed > speedLimit) {
 
                     reproductor.play(snare);
                 }
