@@ -15,8 +15,9 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
     private float[] gravity = new float[3];
     private float[] linear_acceleration = new float[3];
     private float[] gravityDirection = new float[3];
+    private float lastSpeed = (float) 0.0;
     private long lastUpdate = 0;
-    private int speedLimit = 100;
+    private static final int speedLimit = 90;
     private SensorManager sensorManager;
     private Sensor accelerometer;
 
@@ -37,7 +38,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
         //Establece los sensores que vamos a usar
         sensorManager = (SensorManager) getSystemService(getApplicationContext().SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(this, accelerometer , SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, accelerometer , SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     @Override
@@ -76,7 +77,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
             linear_acceleration[1] = event.values[1] - gravity[1];
             linear_acceleration[2] = event.values[2] - gravity[2];
 
-            //Obtinene muestras entre 100 milisegundos
+            //Obtiene muestras entre 100 milisegundos
             long curTime = System.currentTimeMillis();
 
             if ((curTime - lastUpdate) > 100) {
@@ -91,10 +92,12 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
                 //Calcula la velocidad en proporción de la dirección de la gravedad
                 float speed = ((linear_acceleration[0]*gravityDirection[0]) + (linear_acceleration[1]*gravityDirection[1]) + (linear_acceleration[2]*gravityDirection[2])) * 10;
 
-                if (speed > speedLimit) {
+                if (speed < lastSpeed*0.6 && lastSpeed > speedLimit) {
 
                     reproductor.play(snare);
                 }
+
+                lastSpeed = speed;
             }
 
         }
