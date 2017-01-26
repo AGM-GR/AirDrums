@@ -18,6 +18,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
     private float lastSpeed = (float) 0.0;
     private long lastUpdate = 0;
     private static final int speedLimit = 90;
+    private static final int speedLimitNegative = -90;
     private SensorManager sensorManager;
     private Sensor accelerometer;
 
@@ -44,7 +45,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
 
     }
 
@@ -88,6 +89,11 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
                 gravityDirection[0] = gravity[0] / modulo;
                 gravityDirection[1] = gravity[1] / modulo;
                 gravityDirection[2] = gravity[2] / modulo;
+
+                //Elimina los valores basura de la dirección
+                for (int i=0; i<gravityDirection.length; i++)
+                    if (gravityDirection[i] < 0.5f && gravityDirection[i] > -0.5f)
+                        gravityDirection[i] = 0;
 
                 //Calcula la velocidad en proporción de la dirección de la gravedad
                 float speed = ((linear_acceleration[0]*gravityDirection[0]) + (linear_acceleration[1]*gravityDirection[1]) + (linear_acceleration[2]*gravityDirection[2])) * 10;
