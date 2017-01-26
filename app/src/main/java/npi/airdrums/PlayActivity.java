@@ -7,11 +7,16 @@ import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class PlayActivity extends AppCompatActivity implements SensorEventListener {
 
     private SoundManager reproductor;
-    private int snare;
+    private ArrayList drums = new ArrayList();
+    private int selectedDrum;
+    private float degree = 0;
     private float[] gravity = new float[3];
     private float[] linear_acceleration = new float[3];
     private float[] gravityDirection = new float[3];
@@ -21,6 +26,10 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
     private static final int speedLimitNegative = -90;
     private SensorManager sensorManager;
     private Sensor accelerometer;
+    private Sensor compass;
+
+    //TEXTVIEW
+    TextView data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +43,31 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         //Lee los sonidos que figuran en res/raw
-        snare = reproductor.load(R.raw.snare);
+        drums.add(reproductor.load(R.raw.bass));
+        drums.add(reproductor.load(R.raw.crash));
+        drums.add(reproductor.load(R.raw.floortom));
+        drums.add(reproductor.load(R.raw.hihat));
+        drums.add(reproductor.load(R.raw.midtom));
+        drums.add(reproductor.load(R.raw.snare));
+
+        selectedDrum = (int) drums.get(0);
 
         //Establece los sensores que vamos a usar
         sensorManager = (SensorManager) getSystemService(getApplicationContext().SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, accelerometer , SensorManager.SENSOR_DELAY_FASTEST);
+        compass = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        sensorManager.registerListener(this, compass, SensorManager.SENSOR_DELAY_NORMAL);
+
+        //TEXTVIEW
+        data = (TextView) findViewById(R.id.datoss);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+        sensorManager.registerListener(this, compass, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 
@@ -63,6 +85,12 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+
+        if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
+
+            degree=Math.round(event.values[0]);
+            selectDrum();
+        }
 
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
@@ -100,7 +128,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
 
                 if (speed < lastSpeed*0.65 && lastSpeed > speedLimit) {
 
-                    reproductor.play(snare);
+                    reproductor.play(selectedDrum);
                 }
 
                 lastSpeed = speed;
@@ -112,6 +140,15 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    private void selectDrum() {
+
+        float space = (360 / drums.size())+0.1f;
+
+        selectedDrum = (int) drums.get((int)(degree/space));
+
+        data.setText("Changed: " + ((int)(degree/space)));
     }
 
 }
