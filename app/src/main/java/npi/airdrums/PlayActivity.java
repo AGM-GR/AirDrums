@@ -22,6 +22,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
     private float degree = 0;
     private float initialDegree = 800;
     private long lastUpdate = 0;
+    private float drumSpace = 0;
 
     //Datos del acelerómetro
     private float[] gravity = new float[3];
@@ -63,6 +64,9 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
         drums.add(soundPlayer.load(R.raw.midtom));
 
         selectedDrum = (int) drums.get(0);
+
+        //Guarda el espacio entre los tambores en grados
+        drumSpace = (360 / drums.size())+0.1f;
 
         //Establece los sensores que vamos a usar
         sensorManager = (SensorManager) getSystemService(getApplicationContext().SENSOR_SERVICE);
@@ -112,8 +116,14 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
                 degree = Math.round(event.values[0]);
 
                 //Establece el grado inicial
-                if (initialDegree > 360)
-                    initialDegree = degree;
+                if (initialDegree > 360) {
+
+                    initialDegree = degree - (drumSpace/2);
+
+                    if (initialDegree < 0)
+                        
+                        initialDegree = 360 + initialDegree;
+                }
 
                 //Guarda los grados respecto al grado inicial
                 degree = degree - initialDegree;
@@ -189,11 +199,9 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
     //Función para decidir que drum se está tocando ahora
     private void selectDrum() {
 
-        float space = (360 / drums.size())+0.1f;
+        selectedDrum = (int) drums.get((int)(degree/drumSpace));
 
-        selectedDrum = (int) drums.get((int)(degree/space));
-
-        data.setText("Changed: " + ((int)(degree/space)));
+        data.setText("Changed: " + ((int)(degree/drumSpace)));
     }
 
 }
