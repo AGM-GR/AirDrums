@@ -31,8 +31,8 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
 
     //Datos de detección del golpeo
     private float lastSpeed = 0.0f;
-    private static final int speedLimit = 60;
-    private static final int speedLimitNegative = -60;
+    private static final int speedLimit = 40;
+    private static final int speedLimitNegative = -40;
     private boolean hitting = false;
     private long startHitting = 0;
     private static final int hitTimeout = 100;
