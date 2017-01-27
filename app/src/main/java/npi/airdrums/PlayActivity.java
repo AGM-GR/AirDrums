@@ -16,6 +16,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
     //Datos de sonidos
     private SoundManager soundPlayer;
     private ArrayList drums = new ArrayList();
+    private ArrayList drumsNames = new ArrayList();
     private int selectedDrum;
 
     //Datos de la brújula
@@ -59,9 +60,13 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
 
         //Lee los sonidos que figuran en res/raw
         drums.add(soundPlayer.load(R.raw.snare));
+        drumsNames.add("Snare");
         drums.add(soundPlayer.load(R.raw.floortom));
+        drumsNames.add("FloorTom");
         drums.add(soundPlayer.load(R.raw.crash));
+        drumsNames.add("Crash");
         drums.add(soundPlayer.load(R.raw.midtom));
+        drumsNames.add("Midtom");
 
         selectedDrum = (int) drums.get(0);
 
@@ -167,7 +172,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
 
             //Detecta el movimiento de golpeo hacia abajo
             //Primero una aceleración negativa fuerte y despues una aceleración positiva fuerte.
-            //Esto deve de darse dentro de un tiempo establecido.
+            //Esto debe de darse dentro de un tiempo establecido.
             if (!hitting && lastSpeed < speedLimitNegative) {
 
                 hitting = true;
@@ -201,7 +206,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
 
         selectedDrum = (int) drums.get((int)(degree/drumSpace));
 
-        data.setText("Changed: " + ((int)(degree/drumSpace)));
+        data.setText("Drum: " + drumsNames.get((int)(degree/drumSpace)));
     }
 
 }
