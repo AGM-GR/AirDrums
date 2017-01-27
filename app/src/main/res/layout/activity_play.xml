@@ -14,22 +14,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:gravity="center">
 
         <TextView
-            android:text="0"
+            android:text="None"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/datoss"
-            android:layout_weight="1" />
+            android:layout_weight="0.1" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:src="@drawable/baqueta"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:id="@+id/baqueta" />
+            android:id="@+id/baqueta"
+            android:layout_weight="0.9" />
 
     </LinearLayout>
 
