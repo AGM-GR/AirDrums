@@ -36,7 +36,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
     private static final int speedLimitNegative = -40;
     private boolean hitting = false;
     private long startHitting = 0;
-    private static final int hitTimeout = 100;
+    private static final int hitTimeout = 300;
 
     //Datos de control de sensores
     private SensorManager sensorManager;
