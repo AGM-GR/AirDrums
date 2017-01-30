@@ -111,10 +111,10 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
         //DATOS DE LA BRÚJULA
         if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
 
-            //Obtiene muestras cada 100 milisegundos
+            //Obtiene muestras cada 40 milisegundos
             long curTime = System.currentTimeMillis();
 
-            if ((curTime - lastUpdate) > 100 && !hitting) {
+            if ((curTime - lastUpdate) > 40 && !hitting) {
                 lastUpdate = curTime;
 
                 //Guarda los grados respecto al norte

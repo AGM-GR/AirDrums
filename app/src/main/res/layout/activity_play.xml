@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_play"
     android:layout_width="match_parent"
@@ -9,30 +8,26 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="npi.airdrums.PlayActivity">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/colorPrimaryBackground"
+    tools:context="npi.airdrums.PlayActivity" >
 
-    <LinearLayout
+    <TextView
+        android:text="None"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/datoss"
+        android:textColor="@color/colorText"
+        android:layout_weight="0.1" />
+
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:src="@drawable/baqueta"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/baqueta"
+        android:layout_weight="0.9" />
 
-        <TextView
-            android:text="None"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/datoss"
-            android:layout_weight="0.1" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baqueta"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/baqueta"
-            android:layout_weight="0.9" />
-
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>
