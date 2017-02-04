@@ -13,7 +13,7 @@
     tools:context="npi.airdrums.MainMenuActivity">
 
     <Button
-        android:text="PLAY !"
+        android:text="@string/start_button_text"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:id="@+id/start_button"

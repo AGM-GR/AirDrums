@@ -1,14 +1,18 @@
 package npi.airdrums;
 
+import android.app.AlertDialog;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
-import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.WindowManager;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import java.util.ArrayList;
 
@@ -57,6 +61,11 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
     //Datos de la vista
     private TextView data;
 
+    //Datos para dialogos
+    AlertDialog menuDialog;
+    AlertDialog.Builder helpDialog;
+
+
     //Función onCreate, llamada al crear la actividad
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +86,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
         drums.add(soundPlayer.load(R.raw.crash));
         drumsNames.add("Crash");
         drums.add(soundPlayer.load(R.raw.midtom));
-        drumsNames.add("Midtom");
+        drumsNames.add("MidTom");
 
         selectedDrum = (int) drums.get(0);
 
@@ -95,6 +104,17 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
 
         //Enlace con los elementos de la vista
         data = (TextView) findViewById(R.id.drum_seleccioando);
+
+        //Crea los dialogos
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_help, null);
+
+        helpDialog = new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setView(dialogView)
+                .setTitle(R.string.menu_help)
+                .setNeutralButton(R.string.ok_button,null);
+
+        menuDialog = helpDialog.create();
     }
 
     //Función onResume, llamada cuando se vuelve de la pausa a la actividad
@@ -240,10 +260,6 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
-    //Función onAccuracyChanged, llamada cuando cambia la sensibilidad del sensor
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
-
     //Función para decidir que drum se está tocando ahora
     private void selectDrum() {
 
@@ -262,6 +278,32 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
         drumsNames.remove(0);
 
         selectDrum();
+    }
+
+    //Función onAccuracyChanged, llamada cuando cambia la sensibilidad del sensor
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
+    //Función onCreateOptionMenu, para añadir el estilo de nuestro action_bar
+    @Override
+    public boolean onCreateOptionsMenu (Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar, menu); // set your file name
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //Función onOptionItemSelected, para definir el funcionamiento de las opciones del action_bar
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+
+        if (item.getItemId() == R.id.help) {
+
+            menuDialog.show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

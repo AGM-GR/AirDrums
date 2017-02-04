@@ -12,7 +12,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/colorPrimaryBackground"
-    tools:context="npi.airdrums.PlayActivity" >
+    tools:context="npi.airdrums.PlayActivity">
 
     <TextView
         android:text="None"
