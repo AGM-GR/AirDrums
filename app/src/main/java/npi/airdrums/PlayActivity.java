@@ -8,7 +8,6 @@ import android.media.AudioManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 public class PlayActivity extends AppCompatActivity implements SensorEventListener {
@@ -93,7 +92,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
         sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_GAME);
 
         //Enlace con los elementos de la vista
-        data = (TextView) findViewById(R.id.datoss);
+        data = (TextView) findViewById(R.id.drum_seleccioando);
     }
 
     //Función onResume, llamada cuando se vuelve de la pausa a la actividad

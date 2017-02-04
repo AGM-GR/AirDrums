@@ -17,7 +17,7 @@
         android:text="None"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/datoss"
+        android:id="@+id/drum_seleccioando"
         android:textColor="@color/colorText"
         android:layout_weight="0.1" />
 
