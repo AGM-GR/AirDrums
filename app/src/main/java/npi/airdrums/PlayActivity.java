@@ -62,8 +62,8 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
     private TextView data;
 
     //Datos para dialogos
-    AlertDialog menuDialog;
-    AlertDialog.Builder helpDialog;
+    private AlertDialog menuDialog;
+    private AlertDialog.Builder helpDialog;
 
 
     //Función onCreate, llamada al crear la actividad
