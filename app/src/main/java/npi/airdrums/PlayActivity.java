@@ -5,8 +5,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.TextView;
 import java.util.ArrayList;
 
@@ -53,7 +55,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
     private Sensor gyroscope;
 
     //Datos de la vista
-    TextView data;
+    private TextView data;
 
     //Función onCreate, llamada al crear la actividad
     @Override
