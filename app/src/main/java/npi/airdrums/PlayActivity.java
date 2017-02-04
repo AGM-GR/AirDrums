@@ -30,18 +30,28 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
     private float[] linear_acceleration = new float[3];
     private float[] gravityDirection = new float[3];
 
+    //Datos del gyroscopio
+    private float[] gyro = new float[3];
+
     //Datos de detección del golpeo
-    private float lastSpeed = 0.0f;
     private static final int speedLimit = 40;
     private static final int speedLimitNegative = -40;
     private boolean hitting = false;
     private long startHitting = 0;
     private static final int hitTimeout = 300;
 
+    //Datos de detección de giro
+    private static final int gyroLimit = 8;
+    private static final int gyroLimitNegative = -10;
+    private boolean rolling = false;
+    private long startRolling = 0;
+    private static final int gyroTimeout = 100;
+
     //Datos de control de sensores
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor compass;
+    private Sensor gyroscope;
 
     //Datos de la vista
     TextView data;
@@ -76,9 +86,11 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
         //Establece los sensores que vamos a usar
         sensorManager = (SensorManager) getSystemService(getApplicationContext().SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(this, accelerometer , SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, accelerometer , SensorManager.SENSOR_DELAY_UI);
         compass = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-        sensorManager.registerListener(this, compass, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, compass, SensorManager.SENSOR_DELAY_UI);
+        gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_GAME);
 
         //Enlace con los elementos de la vista
         data = (TextView) findViewById(R.id.datoss);
@@ -90,8 +102,9 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
         super.onResume();
 
         //Restablece el registro de datos de los sensores
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(this, compass, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(this, compass, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_GAME);
         initialDegree = 800;
     }
 
@@ -126,7 +139,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
                     initialDegree = degree - (drumSpace/2);
 
                     if (initialDegree < 0)
-                        
+
                         initialDegree = 360 + initialDegree;
                 }
 
@@ -173,12 +186,12 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
             //Detecta el movimiento de golpeo hacia abajo
             //Primero una aceleración negativa fuerte y despues una aceleración positiva fuerte.
             //Esto debe de darse dentro de un tiempo establecido.
-            if (!hitting && lastSpeed < speedLimitNegative) {
+            if (!hitting && speed < speedLimitNegative) {
 
                 hitting = true;
                 startHitting = System.currentTimeMillis();
             }
-            else if (hitting && lastSpeed > speedLimit) {
+            else if (hitting && speed > speedLimit) {
 
                 soundPlayer.play(selectedDrum);
                 hitting = false;
@@ -192,8 +205,37 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
                     hitting = false;
             }
 
-            lastSpeed = speed;
+        }
 
+        //DATOS DEL GYROSCOPIO
+        if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+
+            gyro = event.values;
+
+            //Obtiene la velocidad linear del movimiento de Roll
+            float roll = gyro[1];
+
+            //Detecta el movimiento de roll positivo
+            //Primero una aceleración negativa fuerte y despues una aceleración positiva fuerte.
+            //Esto debe de darse dentro de un tiempo establecido.
+            if (!rolling && roll < gyroLimitNegative) {
+
+                rolling = true;
+                startRolling = System.currentTimeMillis();
+            }
+            else if (rolling && roll > gyroLimit) {
+
+                nextDrum();
+                rolling = false;
+            }
+            else if (rolling) {
+
+                long currentTime = System.currentTimeMillis();
+
+                if ((currentTime - startRolling) > gyroTimeout)
+
+                    rolling = false;
+            }
         }
     }
 
@@ -207,6 +249,18 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
         selectedDrum = (int) drums.get((int)(degree/drumSpace));
 
         data.setText("Drum: " + drumsNames.get((int)(degree/drumSpace)));
+    }
+
+    //Función para cambiar al siguiente Drum
+    private void nextDrum() {
+
+        //Inserta el final el primer elemento y elimina el primer elemento
+        drums.add(drums.size(), drums.get(0));
+        drums.remove(0);
+        drumsNames.add(drumsNames.size(), drumsNames.get(0));
+        drumsNames.remove(0);
+
+        selectDrum();
     }
 
 }
