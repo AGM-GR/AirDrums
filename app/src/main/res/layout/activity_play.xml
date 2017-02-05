@@ -18,7 +18,7 @@
         android:text="None"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/drum_seleccioando"
+        android:id="@+id/drum_seleccionado"
         android:textColor="@color/colorText"
         android:layout_weight="0.1" />
 

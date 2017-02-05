@@ -103,7 +103,7 @@ public class PlayActivity extends AppCompatActivity implements SensorEventListen
         sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_GAME);
 
         //Enlace con los elementos de la vista
-        data = (TextView) findViewById(R.id.drum_seleccioando);
+        data = (TextView) findViewById(R.id.drum_seleccionado);
 
         //Crea los dialogos
         LayoutInflater inflater = this.getLayoutInflater();

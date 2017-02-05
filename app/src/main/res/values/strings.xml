@@ -9,8 +9,8 @@
 
     //Help
     <string name="help_text_1">Para jugar a AirDrums, basta con golpear con tu móvil en el aire hacia abajo.</string>
-    <string name="help_text_2">Encima de la baqueta, nos muestra el Drum actualmente seleccionado, este cambiará girando sobre nosotros mismos de forma que disponemos de una batería virtual alrededor nuestra.</string>
-    <string name="help_text_3">Para cambiar al siguiente Drum que tenemos ahora mismo enfrente, basta con girar bruscamente el móvil sobre si mismo hacia la izquierda.</string>
+    <string name="help_text_2">Encima de la baqueta se nos muestra el Drum actualmente seleccionado. Este cambiará girando sobre nosotros mismos, de forma que disponemos de una batería virtual a nuestro alrededor.</string>
+    <string name="help_text_3">Para cambiar al siguiente Drum que tenemos ahora mismo enfrente, basta con girar bruscamente el móvil sobre sí mismo hacia la izquierda.</string>
 
     <string name="ok_button">Aceptar</string>
 
